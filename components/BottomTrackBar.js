@@ -3,30 +3,11 @@ import { StyleSheet, View, Text, FlatList, ActivityIndicator, Image, TouchableOp
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPlayCircle } from '@fortawesome/free-solid-svg-icons';
 import { faPauseCircle } from '@fortawesome/free-solid-svg-icons';
-import { Audio } from 'expo-av';
 
 export default class BottomTrackBar extends React.Component {
   constructor(props) {
-    super(props)
-
-    // this.state = {
-    //   isTrackPlaying: this.props.isTrackPlaying
-    // }
+    super(props);
   }
-
-  // _handleResumeTrack = (soundObject) => {
-  //   soundObject.playAsync();
-  //   this.setState({
-  //     isTrackPlaying: true
-  //   })
-  // }
-
-  // _handlePauseTrack = (soundObject) => {
-  //   soundObject.pauseAsync();
-  //   this.setState({
-  //     isTrackPlaying: false
-  //   })
-  // }
 
   render() {
     return (
@@ -36,8 +17,7 @@ export default class BottomTrackBar extends React.Component {
             <Text style={styles.trackName}>{this.props.currentTrackName}</Text>
             <Text style={styles.author}>{this.props.currentTrackAuthor}</Text>
           </View>
-          {
-          this.props.isTrackPlaying ? (
+          {this.props.isTrackPlaying ? (
             <FontAwesomeIcon 
               icon={ faPauseCircle } 
               style={styles.icon} 
@@ -49,23 +29,7 @@ export default class BottomTrackBar extends React.Component {
               style={styles.icon} 
               size={40}
               onPress={this.props.resumePlayTrack}
-            />)
-          }
-          {/* {
-          this.state.isTrackPlaying ? (
-            <FontAwesomeIcon 
-              icon={ faPauseCircle } 
-              style={styles.icon} 
-              size={40}
-              onPress={() => this._handlePauseTrack(this.props.soundObject)}
-            />) : (
-            <FontAwesomeIcon 
-              icon={ faPlayCircle } 
-              style={styles.icon} 
-              size={40}
-              onPress={() => this._handleResumeTrack(this.props.soundObject)}
-            />)
-          } */}
+            />)}
         </View>
       </View>
     )
