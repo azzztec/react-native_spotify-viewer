@@ -60,7 +60,7 @@ export default class TracksScreen extends React.Component {
           <ActivityIndicator size='large'/> : 
           <TrackList
               tracks={this.state.tracks}
-              prevSoundObject={this.props.route.params.soundObject}
+              prevSoundObject={this.props.route.params.prevSoundObject}
               setNewSoundObject={this.props.route.params.setNewSoundObject}
           />}
       </View>

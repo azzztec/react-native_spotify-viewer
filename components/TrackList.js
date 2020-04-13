@@ -10,34 +10,57 @@ export default class TrackList extends React.Component {
     constructor(props) {
       super(props)
   
-      this._handleResumePlayTrack = this._handleResumePlayTrack.bind(this);
-      this._handlePauseTrack = this._handlePauseTrack.bind(this);
+      this._handleResumePlayTrack = this.handleResumePlayTrack.bind(this);
+      this._handlePauseTrack = this.handlePauseTrack.bind(this);
       this.soundObject = new Audio.Sound();
       this.state = {
         isTrackPlaying: false,
         isFirstTrack: false,
         currentTrackName: '',
         currentTrackAuthor: '',
+        isPrevTrackPlaying: this.props.prevSoundObject.isFirstTrack,
+        isPrevTrackPlayingNow: this.props.prevSoundObject.isTrackPlayingNow
       }
     }
   
-    _handleResumePlayTrack = () => {
-      this.soundObject.playAsync();
+    handleResumePlayTrack = (soundObject) => {
+      soundObject.playAsync()
+
       this.setState({
-        isTrackPlaying: true
+        isPrevTrackPlayingNow: true,
+        isTrackPlaying: true,
+      })
+      this.props.setNewSoundObject({
+        soundObject: soundObject,
+        currentTrackName: this.state.currentTrackName,
+        currentTrackAuthor: this.state.currentTrackAuthor,
+        isTrackPlayingNow: true,
+        isTrackPlaying: true,
+        isFirstTrack: true
       })
     }
   
-    _handlePauseTrack = () => {
-      this.soundObject.pauseAsync();
+    handlePauseTrack = (soundObject) => {
+      soundObject.pauseAsync()
+
       this.setState({
-        isTrackPlaying: false
+        isPrevTrackPlayingNow: false,
+        isTrackPlaying: false,
       })
+      this.props.setNewSoundObject({
+        soundObject: soundObject,
+        currentTrackName: this.state.currentTrackName,
+        currentTrackAuthor: this.state.currentTrackAuthor,
+        isTrackPlayingNow: false,
+        isTrackPlaying: true,
+        isFirstTrack: true
+      })
+      
     }
   
     _handlePlayTrack = async (url, trackName, trackAuthor) => {
-      if(this.props.prevSoundObject) {
-        this.props.prevSoundObject.stopAsync()
+      if(this.props.prevSoundObject.soundObject) {
+        this.props.prevSoundObject.soundObject.stopAsync()
       }
   
       this.soundObject.unloadAsync()
@@ -49,19 +72,40 @@ export default class TrackList extends React.Component {
         currentTrackName: trackName,
         currentTrackAuthor: trackAuthor,
         isTrackPlaying: true,
-        isFirstTrack: true
+        isFirstTrack: true,
+        isPrevTrackPlaying: false,
+        isPrevTrackPlayingNow: true
       })
   
-      this.props.setNewSoundObject(this.soundObject)
+      this.props.setNewSoundObject({
+        soundObject: this.soundObject,
+        currentTrackName: this.state.currentTrackName,
+        currentTrackAuthor: this.state.currentTrackAuthor,
+        isTrackPlayingNow: true,
+        isTrackPlaying: true,
+        isFirstTrack: true,
+      })
     }
     
     render() {
       return (
         <View style={styles.tracksContainer}>
+          {
+            console.log('isPrevTrackPlayingNow: ' + this.state.isPrevTrackPlayingNow)
+          }
+          {(!this.state.isFirstTrack && this.props.prevSoundObject.isTrackPlaying) &&
+            <BottomTrackBar 
+              pauseTrack = {this.handlePauseTrack}
+              resumePlayTrack = {this.handleResumePlayTrack}
+              isTrackPlaying = {this.state.isPrevTrackPlayingNow}
+              currentTrackName = {this.props.prevSoundObject.currentTrackName}
+              currentTrackAuthor = {this.props.prevSoundObject.currentTrackAuthor}
+              soundObject = {this.props.prevSoundObject.soundObject}
+            />}
           {this.state.isFirstTrack &&
             <BottomTrackBar 
-              pauseTrack = {this._handlePauseTrack}
-              resumePlayTrack = {this._handleResumePlayTrack}
+              pauseTrack = {this.handlePauseTrack}
+              resumePlayTrack = {this.handleResumePlayTrack}
               isTrackPlaying = {this.state.isTrackPlaying}
               currentTrackName = {this.state.currentTrackName}
               currentTrackAuthor = {this.state.currentTrackAuthor}

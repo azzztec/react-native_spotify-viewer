@@ -13,7 +13,7 @@ export default class BottomTrackBar extends React.Component {
     return (
       <View >
         <View style={styles.container}>
-          <View>
+          <View style={styles.textContainer}>
             <Text style={styles.trackName}>{this.props.currentTrackName}</Text>
             <Text style={styles.author}>{this.props.currentTrackAuthor}</Text>
           </View>
@@ -22,13 +22,13 @@ export default class BottomTrackBar extends React.Component {
               icon={ faPauseCircle } 
               style={styles.icon} 
               size={40}
-              onPress={this.props.pauseTrack}
+              onPress={() => this.props.pauseTrack(this.props.soundObject)}
             />) : (
             <FontAwesomeIcon 
               icon={ faPlayCircle } 
               style={styles.icon} 
               size={40}
-              onPress={this.props.resumePlayTrack}
+              onPress={() => this.props.resumePlayTrack(this.props.soundObject)}
             />)}
         </View>
       </View>
@@ -49,6 +49,9 @@ const styles = StyleSheet.create({
     borderBottomColor: '#1DB954',
     backgroundColor: '#000000',
   },
+  textContainer: {
+    maxWidth: '80%'
+  }, 
   icon: {
     color: '#ffffff'
   },

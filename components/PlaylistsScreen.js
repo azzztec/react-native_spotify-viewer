@@ -5,7 +5,9 @@ export default class PlaylistsScreen extends React.Component {
   constructor() {
     super();
 
-    this.soundObject = null;
+    this.prevSoundObject = {
+      isFirstTrack: false
+    };
     this.setNewSoundObject = this.setNewSoundObject.bind(this);
     this.state = {
       isLoadingComplete: false,
@@ -15,15 +17,16 @@ export default class PlaylistsScreen extends React.Component {
     }
   }
 
-  setNewSoundObject = (newSoundObject) => {
-    this.soundObject = newSoundObject;
+  setNewSoundObject = (prevSoundObject) => {
+    this.prevSoundObject = Object.assign({}, prevSoundObject)
+    console.log('after pause isTrackPlayingNow: ' + this.prevSoundObject.isTrackPlayingNow)
   }
 
   _handlePress = (playlistId, imageUrl) => {
     this.props.navigation.navigate('TracksScreen', {
       playlistId: playlistId,
       imageUrl: imageUrl,
-      soundObject: this.soundObject,
+      prevSoundObject: this.prevSoundObject,
       setNewSoundObject: this.setNewSoundObject
     });
   }
